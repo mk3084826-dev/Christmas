@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Preparing Your Content — Please Wait</title>
+
+  <!-- Google Font: Montserrat (fallback to system-ui) -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Pink color theme */
+      --bg-1: #ff4b8a;       /* rich pink */
+      --bg-2: #ff9acb;       /* soft pink */
+      --bg-mid: #ff7ab3;     /* middle tone used in gradients */
+
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+
+      /* Accents and highlights (pink tones) */
+      --accent: #ff77a9;     /* softer accent */
+      --accent-2: #ff2d6f;   /* strong pink (used for CTA end tone) */
+
+      --muted: rgba(255,255,255,0.78); /* readable muted text on pink bg */
+      --muted-2: rgba(255,255,255,0.62);
+
+      --card-radius: 14px;
+
+      /* Shadows tuned for pink theme */
+      --shadow-1: 0 8px 30px rgba(30,10,20,0.75);
+      --soft-shadow: 0 6px 20px rgba(30,10,20,0.6);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      /* Background gradient using three pink stops for depth */
+      background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-mid) 45%, var(--bg-2) 100%);
+      color: #fff7fb;
+    }
+
+    /* Page Layout */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 24px;
+      box-sizing:border-box;
+    }
+
+    .container{
+      width:100%;
+      max-width:1000px;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:22px;
+      animation: fadeUp 700ms ease both;
+    }
+
+    /* Ad Placeholder (top) */
+    .ad-top{
+      align-self:stretch;
+      border: 1px dashed rgba(255,255,255,0.08);
+      padding:18px;
+      border-radius:10px;
+      color:var(--muted-2);
+      font-size:14px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      box-shadow: var(--soft-shadow);
+    }
+
+    header.brand{
+      margin-top:6px;
+      text-align:center;
+    }
+    header .title{
+      font-size:28px;
+      font-weight:700;
+      letter-spacing: -0.02em;
+      margin:6px 0 0 0;
+      color: #fff9fb;
+    }
+    header .subtitle{
+      color:var(--muted-2);
+      margin-top:8px;
+      font-weight:400;
+      font-size:14px;
+    }
+
+    /* Main area: counters and processing card */
+    .main-grid{
+      display:flex;
+      gap:24px;
+      align-items:center;
+      width:100%;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    /* Circular countdown - primary */
+    .circle{
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      box-shadow: var(--shadow-1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.06);
+      position:relative;
+      transition:transform 300ms ease;
+    }
+
+    .circle.small{
+      width:110px;
+      height:110px;
+    }
+
+    .circle .num{
+      font-size:64px;
+      font-weight:700;
+      color:#fff7fb;
+      letter-spacing:-1px;
+      text-shadow: 0 6px 18px rgba(255,45,111,0.08);
+    }
+    .circle .label{
+      position:absolute;
+      bottom:14px;
+      width:100%;
+      left:0;
+      text-align:center;
+      font-size:12px;
+      color:var(--muted-2);
+    }
+
+    /* Pulse effect toggled via class */
+    .pulse {
+      animation: pulseScale 350ms ease;
+    }
+
+    @keyframes pulseScale {
+      0% { transform: scale(1); box-shadow: 0 6px 18px rgba(30,10,20,0.5); }
+      50% { transform: scale(1.06); box-shadow: 0 12px 30px rgba(30,10,20,0.6); }
+      100% { transform: scale(1); box-shadow: 0 6px 18px rgba(30,10,20,0.5); }
+    }
+
+    /* Processing card */
+    .card{
+      width:420px;
+      max-width:92%;
+      padding:18px;
+      border-radius:var(--card-radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: var(--soft-shadow);
+      text-align:left;
+    }
+    .card h3{
+      margin:0 0 6px 0;
+      font-size:18px;
+      color: #fff8fb;
+    }
+    .card p.lead{
+      margin:0 0 12px 0;
+      color:var(--muted-2);
+      font-size:13px;
+    }
+
+    /* Dynamic status box + progress */
+    .status-box{
+      background: rgba(255,255,255,0.015);
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      font-weight:600;
+      margin-bottom:12px;
+    }
+
+    .status-text{
+      font-weight:700;
+      color:#fff7fb;
+      min-width:160px;
+      text-align:left;
+      font-size:14px;
+    }
+
+    .progress-wrap{
+      flex:1;
+      padding-left:14px;
+    }
+    .progress{
+      width:100%;
+      height:10px;
+      background: rgba(255,255,255,0.03);
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .progress > i{
+      display:block;
+      height:100%;
+      width:0%;
+      /* Pink gradient progress */
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+      border-radius:999px;
+      transition: width 700ms ease;
+      box-shadow: 0 6px 18px rgba(255,45,111,0.12), inset 0 -6px 15px rgba(255,255,255,0.02);
+    }
+
+    .status-line{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+      font-size:13px;
+      color:var(--muted-2);
+    }
+    .dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background: var(--accent);
+      box-shadow:0 6px 14px rgba(255,45,111,0.12);
+      animation: blink 1s infinite;
+      flex-shrink:0;
+    }
+    .dot.complete{
+      background: var(--accent-2);
+      animation: none;
+      box-shadow: 0 6px 18px rgba(255,45,111,0.14);
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; transform: scale(1); }
+      51%,100% { opacity: 0.25; transform: scale(0.9); }
+    }
+
+    .secure{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted-2);
+      font-size:12px;
+      margin-top:6px;
+    }
+    .secure .lock{
+      display:inline-flex;
+      width:16px;
+      height:16px;
+      align-items:center;
+      justify-content:center;
+      border-radius:4px;
+      background: rgba(255,255,255,0.03);
+      color:var(--accent-2);
+      font-weight:700;
+      font-size:12px;
+    }
+
+    /* CTA and Ready message */
+    .cta {
+      margin-top:12px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-direction:column;
+    }
+    .btn{
+      padding:14px 28px;
+      border-radius:999px;
+      /* Pink CTA gradient */
+      background: linear-gradient(90deg, #ff4b8a 0%, #ff2d6f 100%);
+      color:#fff7fb;
+      font-weight:700;
+      border:none;
+      font-size:15px;
+      letter-spacing:0.6px;
+      cursor:pointer;
+      box-shadow: 0 12px 30px rgba(255,45,111,0.12);
+      transition: transform 160ms ease, opacity 200ms ease;
+      transform-origin:center;
+    }
+    .btn:disabled{
+      opacity:0.65;
+      cursor:not-allowed;
+      transform:none;
+      filter:grayscale(0.03);
+    }
+    .btn:not(:disabled):hover{
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .ready-msg{
+      display:none;
+      /* Pink "ready" highlight */
+      background: rgba(255,75,138,0.08);
+      color: #fff0f6;
+      border:1px solid rgba(255,100,150,0.12);
+      padding:8px 12px;
+      border-radius:8px;
+      font-weight:600;
+      font-size:14px;
+    }
+    .ready-msg.show{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* Secondary ad placeholder (between counters and card) */
+    .ad-middle{
+      align-self:stretch;
+      border: 1px dashed rgba(255,255,255,0.05);
+      padding:10px;
+      border-radius:8px;
+      color:var(--muted-2);
+      font-size:13px;
+      margin-top:6px;
+      margin-bottom:6px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    }
+
+    /* Bottom ad and footer */
+    .ad-bottom{
+      width:100%;
+      border:1px dashed rgba(255,255,255,0.05);
+      padding:12px;
+      border-radius:10px;
+      color:var(--muted-2);
+      font-size:13px;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    }
+
+    footer{
+      margin-top:12px;
+      font-size:12px;
+      color:var(--muted-2);
+      text-align:center;
+      width:100%;
+    }
+
+    /* Fade/slide animation on load */
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(12px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width:880px){
+      .main-grid{ gap:16px; }
+      .circle { width:170px; height:170px; }
+      .circle .num { font-size:48px; }
+      .card { width:360px; }
+    }
+    @media (max-width:520px){
+      .container { gap:14px; }
+      .circle { width:140px; height:140px; }
+      .circle.small{ width:86px; height:86px; }
+      .circle .num { font-size:40px; }
+      header .title { font-size:20px; }
+      .card { width:100%; padding:12px; border-radius:12px; }
+      .btn { padding:12px 18px; font-size:14px; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="container" role="main" aria-labelledby="page-title">
+      <div class="ad-top" aria-hidden="true">Ad Space</div>
+
+      <header class="brand" role="banner">
+        <div class="title" id="page-title">Preparing Your Content</div>
+        <div class="subtitle">Please wait while we prepare your content</div>
+      </header>
+
+      <section class="main-grid" aria-live="polite">
+        <!-- Primary circular countdown -->
+        <div id="primaryCircle" class="circle" role="status" aria-label="Primary countdown">
+          <div class="num" id="primaryNum">10</div>
+          <div class="label">Getting things ready</div>
+        </div>
+
+        <div style="flex:1;min-width:280px;max-width:480px;">
+          <div class="card" aria-hidden="false">
+            <h3>Content Processing</h3>
+            <p class="lead">The link is being processed for viewing.</p>
+
+            <div class="status-box" aria-live="polite">
+              <div class="status-text" id="statusText">Processing</div>
+              <div class="progress-wrap">
+                <div class="progress" aria-hidden="true">
+                  <i id="progressBar"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="status-line">
+              <div id="statusDot" class="dot" aria-hidden="true"></div>
+              <div id="statusLineText">Link generation in progress...</div>
+            </div>
+
+            <div class="secure">
+              <span class="lock" aria-hidden="true">🔒</span>
+              <span>This is a secure, verified link. Your connection is protected.</span>
+            </div>
+
+            <div class="cta" style="margin-top:12px;">
+              <div id="readyMsg" class="ready-msg" role="status" aria-live="polite">✓ Content Ready! Click the CONTINUE button below</div>
+              <button id="ctaBtn" class="btn" disabled style="display:none">PLEASE WAIT...</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary smaller circle (hidden initially) -->
+        <div id="finalCircle" class="circle small" style="display:none" role="status" aria-label="Final countdown">
+          <div class="num" id="finalNum">5</div>
+          <div class="label">Finalizing</div>
+        </div>
+      </section>
+
+      <div class="ad-middle" aria-hidden="true">Ad Space</div>
+
+      <div class="ad-bottom" aria-hidden="true">Ad Space</div>
+
+      <footer>
+        © 2026 Content Delivery Service. All rights reserved.
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    /**
+     * Redirect integration (Smartlink)
+     *
+     * The redirect URL is isolated in a single variable (destinationUrl).
+     * The actual redirect only occurs:
+     *  - after the countdowns complete and the CTA is enabled
+     *  - when the user explicitly clicks the button (or activates via keyboard)
+     *
+     * No automatic redirecting or simulated clicks are performed.
+     */
+
+    // Configurable redirect URL (Smartlink) - update here in the future if needed
+    const destinationUrl = "https://www.effectivegatecpm.com/t1qxkwjhat?key=2aa480583aa67581cda06f2fb7f5e226";
+
+    // DOM elements
+    const primaryNumEl = document.getElementById('primaryNum');
+    const primaryCircle = document.getElementById('primaryCircle');
+    const finalCircle = document.getElementById('finalCircle');
+    const finalNumEl = document.getElementById('finalNum');
+    const ctaBtn = document.getElementById('ctaBtn');
+    const statusTextEl = document.getElementById('statusText');
+    const progressBarEl = document.getElementById('progressBar');
+    const statusDot = document.getElementById('statusDot');
+    const statusLineText = document.getElementById('statusLineText');
+    const readyMsg = document.getElementById('readyMsg');
+
+    // State
+    let primarySeconds = 10;
+    let finalSeconds = 5;
+
+    // --- simulateProcessing ---
+    // Simulates the backend processing: cycles "Processing", "Processing.", ... and updates the progress bar.
+    function simulateProcessing() {
+      // Status phases and how many steps to take for each phase
+      const statuses = ["Processing", "Processing.", "Processing..", "Processing..."];
+      const totalSteps = 8; // total increments of progress we'll simulate
+      let step = 0;
+
+      const interval = setInterval(() => {
+        // cycle status text (wrap)
+        const idx = step % statuses.length;
+        statusTextEl.textContent = statuses[idx];
+
+        // update progress based on step
+        const pct = Math.min(100, Math.round(((step + 1) / totalSteps) * 100));
+        progressBarEl.style.width = pct + "%";
+
+        step++;
+
+        // when finished
+        if (step >= totalSteps) {
+          clearInterval(interval);
+          // finalize status
+          statusTextEl.textContent = "Your content is ready!";
+          progressBarEl.style.width = "100%";
+          statusDot.classList.add('complete');
+          statusLineText.textContent = "Link generation complete!";
+          readyMsg.classList.add('show');
+        }
+      }, 900); // change every 900ms for a smooth feel
+    }
+
+    // --- mainCountdown ---
+    // Handles the primary 10-second countdown. When done, it hides the primary circle,
+    // shows the final (smaller) countdown and reveals the CTA in a disabled state.
+    function mainCountdown(startSeconds = 10) {
+      primaryNumEl.textContent = startSeconds;
+      let remaining = startSeconds;
+
+      // Add pulse once at the start
+      triggerPulse(primaryCircle);
+      const timer = setInterval(() => {
+        remaining--;
+        if (remaining >= 0) {
+          primaryNumEl.textContent = remaining;
+          triggerPulse(primaryCircle);
+        }
+
+        if (remaining <= 0) {
+          clearInterval(timer);
+          // Transition to final countdown
+          primaryCircle.style.display = 'none';
+          finalCircle.style.display = 'flex';
+
+          // Show CTA (disabled) and update text
+          ctaBtn.style.display = 'inline-block';
+          ctaBtn.disabled = true;
+          ctaBtn.textContent = "PLEASE WAIT...";
+
+          // Start final countdown
+          finalCountdown(finalSeconds);
+        }
+      }, 1000);
+    }
+
+    // helper to add a quick pulse animation class
+    function triggerPulse(el) {
+      el.classList.add('pulse');
+      // remove class after animation completes
+      setTimeout(() => el.classList.remove('pulse'), 380);
+    }
+
+    // --- finalCountdown ---
+    // Handles the final, smaller countdown (e.g., 5 seconds). When completed it enables the CTA button.
+    function finalCountdown(startSeconds = 5) {
+      finalNumEl.textContent = startSeconds;
+      let remaining = startSeconds;
+
+      triggerPulse(finalCircle);
+      const timer = setInterval(() => {
+        remaining--;
+        if (remaining >= 0) {
+          finalNumEl.textContent = remaining;
+          triggerPulse(finalCircle);
+        }
+
+        if (remaining <= 0) {
+          clearInterval(timer);
+          // hide final circle and enable CTA
+          finalCircle.style.display = 'none';
+          ctaBtn.disabled = false;
+          ctaBtn.textContent = "CONTINUE NOW";
+          ctaBtn.setAttribute('aria-label', 'Continue to content');
+        }
+      }, 1000);
+    }
+
+    // CTA click behavior: redirect to destinationUrl when enabled
+    ctaBtn.addEventListener('click', () => {
+      // Only redirect on explicit user click and when the button is enabled
+      if (!ctaBtn.disabled) {
+        // A small visual feedback before redirect
+        ctaBtn.textContent = "Redirecting...";
+        // short delay to allow the UI change to be perceptible; not required for logic
+        setTimeout(()=> {
+          // Perform the actual navigation to the Smartlink
+          window.location.href = destinationUrl;
+        }, 200);
+      }
+    });
+
+    // Initialize everything on page load
+    (function init() {
+      // Start processing simulation (independent of countdowns)
+      simulateProcessing();
+
+      // Start the primary countdown
+      mainCountdown(primarySeconds);
+    })();
+
+    // Accessibility improvement: allow keyboard activation if focused
+    ctaBtn.addEventListener('keyup', (e) => {
+      if ((e.key === 'Enter' || e.key === ' ') && !ctaBtn.disabled) {
+        ctaBtn.click();
+      }
+    });
+
+  </script>
+</body>
+</html>
